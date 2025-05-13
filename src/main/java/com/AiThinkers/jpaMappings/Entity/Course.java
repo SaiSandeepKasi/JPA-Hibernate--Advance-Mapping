@@ -25,6 +25,20 @@ public class Course {
     @JoinColumn(name = "course_id")
     private List<Review>review;
 
+
+    @ManyToMany(fetch = FetchType.LAZY,
+        cascade = {CascadeType.PERSIST,CascadeType.MERGE,
+                CascadeType.DETACH,CascadeType.REFRESH})
+    @JoinTable(
+        name ="course_student",
+        joinColumns =@JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "student_id")
+    )
+    private List<Student> student;
+
+
+
+
     public Course(String title) {
         this.title = title;
     }
@@ -69,6 +83,24 @@ public class Course {
         }
         review.add(theReview);
     }
+//students many to many
+    public List<Student> getStudent() {
+        return student;
+    }
+
+    public void setStudent(List<Student> student) {
+        this.student = student;
+    }
+
+//add conveience for method
+
+    public void addStudent(Student thestudent){
+        if(student == null){
+            student = new ArrayList<>();
+        }
+        student.add(thestudent);
+    }
+
 
     @Override
     public String toString() {

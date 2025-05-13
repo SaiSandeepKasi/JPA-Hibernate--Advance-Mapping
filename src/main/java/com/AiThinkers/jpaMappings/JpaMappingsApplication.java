@@ -1,9 +1,6 @@
 package com.AiThinkers.jpaMappings;
 
-import com.AiThinkers.jpaMappings.Entity.Course;
-import com.AiThinkers.jpaMappings.Entity.Instructor;
-import com.AiThinkers.jpaMappings.Entity.InstructorDetails;
-import com.AiThinkers.jpaMappings.Entity.Review;
+import com.AiThinkers.jpaMappings.Entity.*;
 import com.AiThinkers.jpaMappings.dao.AppDAO;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -22,35 +19,77 @@ public class JpaMappingsApplication {
 		public CommandLineRunner commandLineRunner(AppDAO appDAO){
 
 		return runner ->{
-	        //createInstructor(appDAO);
-			//findInstructor(appDAO);
-			//deleteInstructor(appDAO);
-/*
-			//using bidirectional
 
- */
-			//findInstructorDetails(appDAO);
-			//deleteInstructorDetails(appDAO);
-
-
-			//createInstructorWithCourses(appDAO);
-			//findInstructorWithCourses(appDAO);
-
-			//findCoursesForInstructor(appDAO);
-			//findInstructorWithCoursesJoinFetch(appDAO);
-			//updateInstructor(appDAO);
-			//updateCourse(appDAO);
-			//deleteInstructor(appDAO);
-			//deleteCourse(appDAO);
-
-			//One to Many Uni-directional
-
-			//createCourseAndReview(appDAO);
-			//retriveCourseAndReviews(appDAO);
-			deleteCourseAndReview(appDAO);
-
+			//createCourseAndStudents(appDAO);
+			//findCourseAndStudents(appDAO);
+			//findStudentAndCourses(appDAO);
+			//addMoreCoursesForStudents(appDAO);
+			deleteCourse(appDAO);
 		};
 		}
+		
+
+
+		private void addMoreCoursesForStudents(AppDAO appDAO){
+
+		int theId =2;
+		Student tempStudent = appDAO.findStudentAndCoursesByStudentId(theId);
+
+		Course tempCourse1 = new Course("Ruby---cubee");
+		Course tempCourse2 = new Course("R Programming Language");
+
+		tempStudent.addCourses(tempCourse1);
+		tempStudent.addCourses(tempCourse2);
+
+		System.out.println("saving student :"+ tempStudent);
+		System.out.println("associated courses :" + tempStudent.getCourses());
+
+		appDAO.update(tempStudent);
+		}
+
+		private void findStudentAndCourses(AppDAO appDAO){
+
+		int theId = 2;
+
+		Student tempstudent = appDAO.findStudentAndCoursesByStudentId(theId);
+
+		System.out.println("Loaded student :"+tempstudent);
+		System.out.println("Courses : "+tempstudent.getCourses());
+
+
+		}
+
+		private void findCourseAndStudents(AppDAO appDAO){
+		int theId=10;
+		Course tempCourse = appDAO.findCourseAndStudentByCourseId(theId);
+
+		System.out.println("Loaded course : "+tempCourse);
+		System.out.println("Students :"+tempCourse.getStudent());
+		}
+
+
+		private void createCourseAndStudents(AppDAO appDAO){
+
+		//created course
+			Course tempCourse=new Course("Python-The future Snake !!");
+
+			//created or added students
+			Student tempStudent1=new Student("Sandeep","kasi","saisandeep@gmail.com");
+			Student tempStudent2=new Student("jeev","vinjam","jeevankirsh@gmail.com");
+
+
+//added students to course
+			tempCourse.addStudent(tempStudent1);
+			tempCourse.addStudent(tempStudent2);
+//saving
+			System.out.println("Saving Courses :"+tempCourse);
+			System.out.println("Student in the course :"+tempCourse.getStudent());
+
+			appDAO.save(tempCourse);
+
+	}
+
+
 
 		private void deleteCourseAndReview(AppDAO appDAO){
 
